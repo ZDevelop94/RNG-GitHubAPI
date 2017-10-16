@@ -1,0 +1,5 @@
+package Integration
+
+class GitHubConnectorSpec {
+
+}
