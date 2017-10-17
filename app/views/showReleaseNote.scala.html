@@ -1,0 +1,17 @@
+@(commits: List[String])
+
+@main("Release Notes Page"){
+
+    <div class="jumbotron text-center">
+        <h1>agent-Kyc</h1>
+        <p>This is a demo of a simple release note generator using the GitHub API to look for commits within a certain time period</p>
+    </div>
+
+    @for(i <- commits) {
+        <div class="container">
+            <div class="row">
+                    <p>Commit message: @i</p>
+            </div>
+        </div>
+    }
+}

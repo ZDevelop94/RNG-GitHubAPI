@@ -1,0 +1,19 @@
+@(releases: List[String], repo: String)
+
+@main("Release Notes Page"){
+
+  <div class="jumbotron text-center">
+    <h1>agent-Kyc available Releases</h1>
+    <p>This is a demo of a simple release note generator using the GitHub API to look for commits within a certain time period</p>
+  </div>
+
+  @for(release <- releases) {
+    <div class="container">
+      <div class="row">
+        <p>Release: @release</p>
+        <a href=@routes.ReleaseNoteController.showCommits(repo, release)>About us</a>
+        <input type="button" class="btn-primary" value="go to notes">
+      </div>
+    </div>
+  }
+}
