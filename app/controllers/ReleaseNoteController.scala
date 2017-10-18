@@ -24,10 +24,12 @@ class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator
 
   def getReleases(repo: String) = Action.async {
 
-    val jsonFuture = gitHubConnector.getReleases(repo).map(response => response.json)
+    val jsonFuture: Future[JsValue] = gitHubConnector.getReleases(repo).map(response => response.json)
+    jsonFuture.map(json => println(s"json value: ${json.toString}"))
     val releasesFuture: Future[List[String]] = jsonFuture.map(json =>
-      releaseNoteGenerator.messageExtractor(json))
+      releaseNoteGenerator.getReleases(json))
 
+    releasesFuture.foreach(println(_))
     releasesFuture.map(releases => Ok(views.html.showReleases(releases, repo)))
   }
 }

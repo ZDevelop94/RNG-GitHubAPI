@@ -18,6 +18,12 @@ class GitHubConnectorSpec extends WordSpec with ShouldMatchers with OptionValues
       result.body.contains("[APB-1350][ph,rv] adding extra") shouldBe true
     }
 
+    "return repo releases in JSON format" in {
+      val result = await(connector.getReleases("agent-kyc"))
+      result.status shouldBe OK
+      result.body.contains("v0.3.0") shouldBe true
+    }
+
     "return a BAD REQUEST when sending an invalid Json" in {
       val result = await(connector.getCommits("20170101","20180101"))
       result.body.contains("[]") shouldBe true

@@ -8,10 +8,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 @Singleton
 class GitHubConnector @Inject() (ws: WSClient) {
 
-  val baseUrl = "https://api.github.com/repos/HMRC/agent-kyc"
+  val baseUrl = "https://api.github.com/repos/HMRC"
 
   def getCommits (since: String, until: String): Future[WSResponse] = {
-    val url =  baseUrl + "/commits"
+    val url =  baseUrl + "/agent-kyc/commits"
     ws.url(url).withQueryString(
       "since" -> since, "until" -> until).withHeaders(
       "Accept" -> "application/vnd.github.v3+json")
