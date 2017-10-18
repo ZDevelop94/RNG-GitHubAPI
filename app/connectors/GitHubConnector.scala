@@ -10,8 +10,8 @@ class GitHubConnector @Inject() (ws: WSClient) {
 
   val baseUrl = "https://api.github.com/repos/HMRC"
 
-  def getCommits (since: String, until: String): Future[WSResponse] = {
-    val url =  baseUrl + "/agent-kyc/commits"
+  def getCommits (since: String, until: String, repo: String): Future[WSResponse] = {
+    val url =  baseUrl + s"/$repo/commits"
     ws.url(url).withQueryString(
       "since" -> since, "until" -> until).withHeaders(
       "Accept" -> "application/vnd.github.v3+json")

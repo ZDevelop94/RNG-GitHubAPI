@@ -13,7 +13,7 @@ class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator
 
   def showCommits(repo: String, release: String) = Action.async {
 
-    val jsonFuture: Future[JsValue] = gitHubConnector.getCommits("2017-01-01T00:00:00Z", "2018-01-01T00:00:00Z")
+    val jsonFuture: Future[JsValue] = gitHubConnector.getCommits("2017-01-01T00:00:00Z", "2018-01-01T00:00:00Z",repo)
       .map(response => response.json)
 
     val messagesFuture: Future[List[String]] = jsonFuture.map(json =>
