@@ -1,9 +1,9 @@
-@(commits: List[String])
+@(commits: List[String], repo: String)
 
 @main("Release Notes Page"){
 
     <div class="jumbotron text-center">
-        <h1>agent-Kyc</h1>
+        <h1>@repo</h1>
         <p>This is a demo of a simple release note generator using the GitHub API to look for commits within a certain time period</p>
     </div>
 

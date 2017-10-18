@@ -19,7 +19,7 @@ class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator
     val messagesFuture: Future[List[String]] = jsonFuture.map(json =>
       releaseNoteGenerator.messageExtractor(json))
 
-    messagesFuture.map(messages => Ok(views.html.showReleaseNote(messages)))
+    messagesFuture.map(messages => Ok(views.html.showReleaseNote(messages, repo)))
   }
 
   def getReleases(repo: String) = Action.async {
