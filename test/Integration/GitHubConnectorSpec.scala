@@ -13,7 +13,7 @@ class GitHubConnectorSpec extends WordSpec with ShouldMatchers with OptionValues
 
   "GitHubConnector" should {
     "return repo commits in JSON format" in {
-      val result = await(connector.getCommits("2017-01-01T00:00:00Z", "2018-01-01T00:00:00Z"))
+      val result = await(connector.getCommits("2017-01-01T00:00:00Z", "2018-01-01T00:00:00Z","agent-kyc"))
       result.status shouldBe OK
       result.body.contains("[APB-1350][ph,rv] adding extra") shouldBe true
     }
@@ -25,7 +25,7 @@ class GitHubConnectorSpec extends WordSpec with ShouldMatchers with OptionValues
     }
 
     "return a BAD REQUEST when sending an invalid Json" in {
-      val result = await(connector.getCommits("20170101","20180101"))
+      val result = await(connector.getCommits("20170101","20180101","agent-kyc"))
       result.body.contains("[]") shouldBe true
     }
   }
