@@ -157,4 +157,8 @@ object GitHubAPIStubs {
       |]
     """.stripMargin
   )
+
+  val validReleaseDates = Some(Map(
+    "v0.3.0" -> "2017-10-13T15:02:03Z",
+    "v0.2.0" -> "2017-10-10T11:10:21Z"))
 }
