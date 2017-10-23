@@ -1,9 +1,14 @@
 package services
 
 import javax.inject.Inject
-import play.api.libs.json._
 
-class ReleaseNoteGenerator @Inject()() {
+import connectors.GitHubConnector
+import play.api.libs.json._
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global._
+import scala.concurrent.ExecutionContext
+
+class ReleaseNoteGenerator @Inject()(gitHubConnector: GitHubConnector) {
 
   def messageExtractor (json: JsValue): List[String] = {
     (json \\ "message").map(_.asOpt[String].getOrElse("Cannot find field")).toList
@@ -15,7 +20,33 @@ class ReleaseNoteGenerator @Inject()() {
       case Some(x) => x
       case _ => List.empty[JsObject]
     }
-    listOfObjects.map(releaseObject => (releaseObject \ "tag_name")
+    val listOfReleases = listOfObjects.map(releaseObject => (releaseObject \ "tag_name")
       .asOpt[String].getOrElse("Cannot find field"))
+
+    val listOfReleaseCreated = listOfObjects.map(releaseObject => (releaseObject \ "created_at")
+      .asOpt[String].getOrElse("Cannot find field"))
+
+    val mappedDates: Map[String,String] = (listOfReleases.reverse zip listOfReleaseCreated.reverse).toMap
+
+    (listOfReleases, mappedDates)
   }
-}
+
+  def getReleaseDates(repo: String, release: String, releases: Option[Map[String, String]])(implicit ec: ExecutionContext) : Future[(String, String)] = {
+    gitHubConnector.getReleases(repo).map(response => response.json)
+    .map(json => releases match {
+      case Some(x) => findDates(release, x)
+      case None => findDates(release, getReleases(json)._2)
+    })
+  }
+
+    def findDates(release: String, releases: Map[String, String]): (String, String) = {
+      def recursive(release: String, releases: Map[String, String], sinceReleaseDate: String): (String, String)= {
+        if (releases.head._1 == release) {
+          (releases.head._2, sinceReleaseDate)
+        } else {
+          recursive(release, releases.tail, releases.head._2)
+        }
+      }
+        recursive(release,releases,releases.head._2)
+      }
+    }

@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import connectors.GitHubConnector
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, Controller}
@@ -11,7 +10,7 @@ import scala.concurrent.Future
 
 class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator, gitHubConnector: GitHubConnector) extends Controller {
 
-  def showCommits(repo: String, release: String) = Action.async {
+  def showCommits(repo: String, release: String, releases: Option[Map[String,String]]) = Action.async {
 
     val jsonFuture: Future[JsValue] = gitHubConnector.getCommits("2017-01-01T00:00:00Z", "2018-01-01T00:00:00Z",repo)
       .map(response => response.json)
@@ -25,11 +24,10 @@ class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator
   def getReleases(repo: String) = Action.async {
 
     val jsonFuture: Future[JsValue] = gitHubConnector.getReleases(repo).map(response => response.json)
-    jsonFuture.map(json => println(s"json value: ${json.toString}"))
-    val releasesFuture: Future[List[String]] = jsonFuture.map(json =>
+
+    val releasesFuture: Future[(List[String],Map[String,String])] = jsonFuture.map(json =>
       releaseNoteGenerator.getReleases(json))
 
-    releasesFuture.foreach(println(_))
-    releasesFuture.map(releases => Ok(views.html.showReleases(releases, repo)))
+    releasesFuture.map(releases => Ok(views.html.showReleases(repo, releases._1, releases._2)))
   }
 }

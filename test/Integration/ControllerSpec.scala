@@ -1,6 +1,6 @@
 package Integration
 
-import controllers.{HomeController, ReleaseNoteController}
+import controllers.ReleaseNoteController
 import org.scalatest.{OptionValues, ShouldMatchers, WordSpec}
 import org.scalatestplus.play._
 import play.api.test.Helpers._
@@ -8,18 +8,15 @@ import play.api.test.{FakeRequest, _}
 import services.ReleaseNoteGenerator
 import connectors._
 import play.api.libs.ws.WSClient
+import support.GitHubAPIStubs._
 
-/**
-  * Add your spec here.
-  * You can mock out a whole application including requests, plugins etc.
-  * For more information, consult the wiki.
-  */
 class ControllerSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite {
 
   private val wsClient = app.injector.instanceOf[WSClient]
-  val releaseNoteGenerator = new ReleaseNoteGenerator()
   val connector = new GitHubConnector(wsClient)
+  val releaseNoteGenerator = new ReleaseNoteGenerator(connector)
   val controller = new ReleaseNoteController(releaseNoteGenerator, connector)
+
 
   "Routes" should {
     "send 404 on a bad request" in {
@@ -40,11 +37,11 @@ class ControllerSpec extends WordSpec with ShouldMatchers with OptionValues with
 
   "ReleaseNoteController" should {
 
-    "return list of commits for one repo" in {
-      val result = controller.showCommits("agent-kyc","v0.3.0")(FakeRequest("GET", "repo/agent-kyc/v0.3.0"))
+    "return list of commits for one release" in {
+      val result = controller.showCommits("agent-kyc","v0.3.0", validReleaseDates)(FakeRequest("GET", "repo/agent-kyc/v0.3.0"))
 
       status(result) shouldBe 200
-      contentAsString(result).contains("added readme details") shouldBe true
+      contentAsString(result).contains("New endpoint") shouldBe true
     }
 
     "return list of releases" in {
