@@ -14,7 +14,7 @@ class ReleaseNoteGenerator @Inject()(gitHubConnector: GitHubConnector) {
     (json \\ "message").map(_.asOpt[String].getOrElse("Cannot find field")).toList
   }
 
-  def getReleases(json: JsValue) = {
+  def getReleases(json: JsValue): (List[String], Map[String,String]) = {
     (json \\ "tag_name").map(_.asOpt[String].getOrElse("Cannot find field")).toList
     val listOfObjects: List[JsObject] = json.asOpt[List[JsObject]] match {
       case Some(x) => x
@@ -40,13 +40,12 @@ class ReleaseNoteGenerator @Inject()(gitHubConnector: GitHubConnector) {
   }
 
     def findDates(release: String, releases: Map[String, String]): (String, String) = {
-      def recursive(release: String, releases: Map[String, String], sinceReleaseDate: String): (String, String)= {
-        if (releases.head._1 == release) {
-          (releases.head._2, sinceReleaseDate)
-        } else {
-          recursive(release, releases.tail, releases.head._2)
+      def recursive(release: String, releases: Map[String, String], sinceReleaseDate: String): (String, String) = {
+        releases match {
+          case tagsAndDates if tagsAndDates.head._1 == release => (sinceReleaseDate, tagsAndDates.head._2)
+          case tagsAndDates => recursive(release, tagsAndDates.tail, tagsAndDates.head._2)
         }
       }
-        recursive(release,releases,releases.head._2)
+        recursive(release,releases,"")
       }
     }

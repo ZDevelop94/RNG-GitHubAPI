@@ -1,24 +1,27 @@
 package controllers
 
 import javax.inject.Inject
+
 import connectors.GitHubConnector
 import play.api.libs.json.JsValue
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Action, Controller, QueryStringBindable}
 import services.ReleaseNoteGenerator
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.duration.Duration
 
 class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator, gitHubConnector: GitHubConnector) extends Controller {
 
   def showCommits(repo: String, release: String, releases: Option[Map[String,String]]) = Action.async {
 
-    val jsonFuture: Future[JsValue] = gitHubConnector.getCommits("2017-01-01T00:00:00Z", "2018-01-01T00:00:00Z",repo)
-      .map(response => response.json)
+    val futureDates = releaseNoteGenerator.getReleaseDates(repo, release, releases)
+      .map(dates => gitHubConnector.getCommits(dates._1, dates._2, repo)
+        .map(response => releaseNoteGenerator.messageExtractor(response.json)))
 
-    val messagesFuture: Future[List[String]] = jsonFuture.map(json =>
-      releaseNoteGenerator.messageExtractor(json))
+    val result = futureDates.map(_.map(x => Ok(views.html.showReleaseNote(x, repo))))
 
-    messagesFuture.map(messages => Ok(views.html.showReleaseNote(messages, repo)))
+    result.flatMap(x => x)
   }
 
   def getReleases(repo: String) = Action.async {

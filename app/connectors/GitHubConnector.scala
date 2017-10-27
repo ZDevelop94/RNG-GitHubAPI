@@ -9,18 +9,27 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class GitHubConnector @Inject() (ws: WSClient) {
 
   val baseUrl = "https://api.github.com/repos/HMRC"
+  val defaultDate = "2000-01-01T00:00:00Z"
 
   def getCommits (since: String, until: String, repo: String): Future[WSResponse] = {
-    val url =  baseUrl + s"/$repo/commits"
-    ws.url(url).withQueryString(
-      "since" -> since, "until" -> until).withHeaders(
-      "Accept" -> "application/vnd.github.v3+json")
-      .get().map { response => response }
+
+    def sendRequest(date: String): Future[WSResponse] = {
+      val url = baseUrl + s"/$repo/commits"
+      ws.url(url).withQueryString(
+        "since" -> date, "until" -> until).withHeaders(
+        "Accept" -> "application/vnd.github.v3+json")
+        .get()
+    }
+
+    since match {
+      case x if x == "" => sendRequest(defaultDate)
+      case x => sendRequest(x)
+    }
   }
 
   def getReleases(repo: String) : Future[WSResponse] = {
     val url = baseUrl + s"/$repo/releases"
     ws.url(url).withHeaders("Accept" -> "application/vnd.github.v3+json")
-      .get().map { response => response }
+      .get()
   }
 }
