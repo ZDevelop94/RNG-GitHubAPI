@@ -11,6 +11,6 @@ GET     /message                    controllers.AsyncController.message
 
 GET     /repo/:user/:repo                 controllers.ReleaseNoteController.getReleases(user: String, repo: String)
 
-GET     /repo/:repo/release/:release controllers.ReleaseNoteController.showCommits(user: String, repo: String, release: String, releases: Option[Map[String, String]])
+GET     /repo/:user/:repo/release/:release controllers.ReleaseNoteController.showCommits(user: String, repo: String, release: String, releases: Option[Map[String, String]])
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
