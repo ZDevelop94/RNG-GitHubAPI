@@ -22,14 +22,14 @@ object GitHubAPIStubs {
       |    "message": "Apb 1350 (#2)\n\n* [APB-1350][ph,rv] adding extra tests\r\n\r\n* [APB-1350][ph,rv] fixed int spec\r\n\r\n* [APB-1350][ph,rv] set default non-local auth host\r\n\r\n* [APB-1350][ph,rv] tidied test\r\n\r\n* [APB-1350][ph,rv] removed seemingly unreachable recover code in AuthActions",
       |    "tree": {
       |      "sha": "476e79a8fb89eff7372239435484ab3e4aa5179d",
-      |      "url": "https://api.github.com/repos/hmrc/agent-kyc/git/trees/476e79a8fb89eff7372239435484ab3e4aa5179d"
+      |      "url": "https://api.github.com/repos/hmrc/agent-subscription/git/trees/476e79a8fb89eff7372239435484ab3e4aa5179d"
       |    },
-      |    "url": "https://api.github.com/repos/hmrc/agent-kyc/git/commits/d783fcc31965e8a3d6103b98a94a182c225ead51",
+      |    "url": "https://api.github.com/repos/hmrc/agent-subscription/git/commits/d783fcc31965e8a3d6103b98a94a182c225ead51",
       |    "comment_count": 0
       |  },
-      |  "url": "https://api.github.com/repos/hmrc/agent-kyc/commits/d783fcc31965e8a3d6103b98a94a182c225ead51",
-      |  "html_url": "https://github.com/hmrc/agent-kyc/commit/d783fcc31965e8a3d6103b98a94a182c225ead51",
-      |  "comments_url": "https://api.github.com/repos/hmrc/agent-kyc/commits/d783fcc31965e8a3d6103b98a94a182c225ead51/comments",
+      |  "url": "https://api.github.com/repos/hmrc/agent-subscription/commits/d783fcc31965e8a3d6103b98a94a182c225ead51",
+      |  "html_url": "https://github.com/hmrc/agent-subscription/commit/d783fcc31965e8a3d6103b98a94a182c225ead51",
+      |  "comments_url": "https://api.github.com/repos/hmrc/agent-subscription/commits/d783fcc31965e8a3d6103b98a94a182c225ead51/comments",
       |  "author": {
       |    "login": "PaulHodgson",
       |    "id": 15338612,
@@ -70,8 +70,8 @@ object GitHubAPIStubs {
       |  },
       |  "parents": [{
       |    "sha": "fc14d9f420790cd08f27d8c7e305251d6336d348",
-      |    "url": "https://api.github.com/repos/hmrc/agent-kyc/commits/fc14d9f420790cd08f27d8c7e305251d6336d348",
-      |    "html_url": "https://github.com/hmrc/agent-kyc/commit/fc14d9f420790cd08f27d8c7e305251d6336d348"
+      |    "url": "https://api.github.com/repos/hmrc/agent-subscription/commits/fc14d9f420790cd08f27d8c7e305251d6336d348",
+      |    "html_url": "https://github.com/hmrc/agent-subscription/commit/fc14d9f420790cd08f27d8c7e305251d6336d348"
       |  }]
       |}]
     """.stripMargin
@@ -81,10 +81,10 @@ object GitHubAPIStubs {
     """
       |[
       |    {
-      |        "url": "https://api.github.com/repos/hmrc/agent-kyc/releases/8112015",
-      |        "assets_url": "https://api.github.com/repos/hmrc/agent-kyc/releases/8112015/assets",
-      |        "upload_url": "https://uploads.github.com/repos/hmrc/agent-kyc/releases/8112015/assets{?name,label}",
-      |        "html_url": "https://github.com/hmrc/agent-kyc/releases/tag/v0.3.0",
+      |        "url": "https://api.github.com/repos/hmrc/agent-subscription/releases/8112015",
+      |        "assets_url": "https://api.github.com/repos/hmrc/agent-subscription/releases/8112015/assets",
+      |        "upload_url": "https://uploads.github.com/repos/hmrc/agent-subscription/releases/8112015/assets{?name,label}",
+      |        "html_url": "https://github.com/hmrc/agent-subscription/releases/tag/v0.3.0",
       |        "id": 8112015,
       |        "tag_name": "v0.3.0",
       |        "target_commitish": "master",
@@ -113,15 +113,15 @@ object GitHubAPIStubs {
       |        "created_at": "2017-10-13T15:02:03Z",
       |        "published_at": "2017-10-13T15:02:05Z",
       |        "assets": [],
-      |        "tarball_url": "https://api.github.com/repos/hmrc/agent-kyc/tarball/v0.3.0",
-      |        "zipball_url": "https://api.github.com/repos/hmrc/agent-kyc/zipball/v0.3.0",
-      |        "body": "\nRelease            : agent-kyc 0.3.0\nRelease candidate  : agent-kyc 0.2.0-4-gbfd1862\n\nLast commit sha    : bfd186256868ea0f582a848f04f74edd2ae285da\nLast commit author : GitHub\nLast commit time   : 13 October 2017 14:22:30 +00:00\n\nRelease and tag created by [Releaser](https://github.com/hmrc/releaser) 1.6.0"
+      |        "tarball_url": "https://api.github.com/repos/hmrc/agent-subscription/tarball/v0.3.0",
+      |        "zipball_url": "https://api.github.com/repos/hmrc/agent-subscription/zipball/v0.3.0",
+      |        "body": "\nRelease            : agent-subscription 0.3.0\nRelease candidate  : agent-subscription 0.2.0-4-gbfd1862\n\nLast commit sha    : bfd186256868ea0f582a848f04f74edd2ae285da\nLast commit author : GitHub\nLast commit time   : 13 October 2017 14:22:30 +00:00\n\nRelease and tag created by [Releaser](https://github.com/hmrc/releaser) 1.6.0"
       |    },
       |    {
-      |        "url": "https://api.github.com/repos/hmrc/agent-kyc/releases/8060680",
-      |        "assets_url": "https://api.github.com/repos/hmrc/agent-kyc/releases/8060680/assets",
-      |        "upload_url": "https://uploads.github.com/repos/hmrc/agent-kyc/releases/8060680/assets{?name,label}",
-      |        "html_url": "https://github.com/hmrc/agent-kyc/releases/tag/v0.2.0",
+      |        "url": "https://api.github.com/repos/hmrc/agent-subscription/releases/8060680",
+      |        "assets_url": "https://api.github.com/repos/hmrc/agent-subscription/releases/8060680/assets",
+      |        "upload_url": "https://uploads.github.com/repos/hmrc/agent-subscription/releases/8060680/assets{?name,label}",
+      |        "html_url": "https://github.com/hmrc/agent-subscription/releases/tag/v0.2.0",
       |        "id": 8060680,
       |        "tag_name": "v0.2.0",
       |        "target_commitish": "master",
@@ -150,9 +150,9 @@ object GitHubAPIStubs {
       |        "created_at": "2017-10-10T11:10:21Z",
       |        "published_at": "2017-10-10T11:10:23Z",
       |        "assets": [],
-      |        "tarball_url": "https://api.github.com/repos/hmrc/agent-kyc/tarball/v0.2.0",
-      |        "zipball_url": "https://api.github.com/repos/hmrc/agent-kyc/zipball/v0.2.0",
-      |        "body": "\nRelease            : agent-kyc 0.2.0\nRelease candidate  : agent-kyc 0.1.0-8-gd783fcc\n\nLast commit sha    : d783fcc31965e8a3d6103b98a94a182c225ead51\nLast commit author : rvijayan\nLast commit time   : 09 October 2017 09:14:45 +00:00\n\nRelease and tag created by [Releaser](https://github.com/hmrc/releaser) 1.6.0"
+      |        "tarball_url": "https://api.github.com/repos/hmrc/agent-subscription/tarball/v0.2.0",
+      |        "zipball_url": "https://api.github.com/repos/hmrc/agent-subscription/zipball/v0.2.0",
+      |        "body": "\nRelease            : agent-subscription 0.2.0\nRelease candidate  : agent-subscription 0.1.0-8-gd783fcc\n\nLast commit sha    : d783fcc31965e8a3d6103b98a94a182c225ead51\nLast commit author : rvijayan\nLast commit time   : 09 October 2017 09:14:45 +00:00\n\nRelease and tag created by [Releaser](https://github.com/hmrc/releaser) 1.6.0"
       |    }
       |]
     """.stripMargin

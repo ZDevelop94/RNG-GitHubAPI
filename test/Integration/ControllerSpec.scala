@@ -38,14 +38,14 @@ class ControllerSpec extends WordSpec with ShouldMatchers with OptionValues with
   "ReleaseNoteController" should {
 
     "return list of commits for one release" in {
-      val result = controller.showCommits("agent-kyc","v0.3.0", validReleaseDates)(FakeRequest("GET", "repo/agent-kyc/v0.3.0/v0.3.0?releases=Map%28v0.2.0+->+2017-10-10T11%3A10%3A21Z%2C+v0.3.0+->+2017-10-13T15%3A02%3A03Z%29"))
+      val result = controller.showCommits("hmrc", "agent-subscription","v0.3.0", validReleaseDates)(FakeRequest("GET", "repo/agent-subscription/v0.3.0/v0.3.0?releases=Map%28v0.2.0+->+2017-10-10T11%3A10%3A21Z%2C+v0.3.0+->+2017-10-13T15%3A02%3A03Z%29"))
 
       status(result) shouldBe 200
       contentAsString(result).contains("New endpoint") shouldBe true
     }
 
     "return list of releases" in {
-      val result = controller.getReleases("agent-kyc")(FakeRequest("GET", "repo/agent-kyc"))
+      val result = controller.getReleases("hmrc","agent-subscription")(FakeRequest("GET", "repo/hmrc/agent-subscription"))
 
       status(result) shouldBe 200
       contentAsString(result).contains("v0.3.0") shouldBe true

@@ -13,24 +13,24 @@ import scala.concurrent.duration.Duration
 
 class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator, gitHubConnector: GitHubConnector) extends Controller {
 
-  def showCommits(repo: String, release: String, releases: Option[Map[String,String]]) = Action.async {
+  def showCommits(user: String, repo: String, release: String, releases: Option[Map[String,String]]) = Action.async {
 
-    val futureDates = releaseNoteGenerator.getReleaseDates(repo, release, releases)
-      .map(dates => gitHubConnector.getCommits(dates._1, dates._2, repo)
+    val futureDates = releaseNoteGenerator.getReleaseDates(user, repo, release, releases)
+      .map(dates => gitHubConnector.getCommits(dates._1, dates._2, user, repo)
         .map(response => releaseNoteGenerator.messageExtractor(response.json)))
 
-    val result = futureDates.map(_.map(x => Ok(views.html.showReleaseNote(x, repo))))
+    val result = futureDates.map(_.map(x => Ok(views.html.showReleaseNote(x, user, repo))))
 
     result.flatMap(x => x)
   }
 
-  def getReleases(repo: String) = Action.async {
+  def getReleases(user: String, repo: String) = Action.async {
 
-    val jsonFuture: Future[JsValue] = gitHubConnector.getReleases(repo).map(response => response.json)
+    val jsonFuture: Future[JsValue] = gitHubConnector.getReleases(user, repo).map(response => response.json)
 
     val releasesFuture: Future[(List[String],Map[String,String])] = jsonFuture.map(json =>
       releaseNoteGenerator.getReleases(json))
 
-    releasesFuture.map(releases => Ok(views.html.showReleases(repo, releases._1, releases._2)))
+    releasesFuture.map(releases => Ok(views.html.showReleases(user, repo, releases._1, releases._2)))
   }
 }

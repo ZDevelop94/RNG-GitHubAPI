@@ -31,8 +31,8 @@ class ReleaseNoteGenerator @Inject()(gitHubConnector: GitHubConnector) {
     (listOfReleases, mappedDates)
   }
 
-  def getReleaseDates(repo: String, release: String, releases: Option[Map[String, String]])(implicit ec: ExecutionContext) : Future[(String, String)] = {
-    gitHubConnector.getReleases(repo).map(response => response.json)
+  def getReleaseDates(user: String, repo: String, release: String, releases: Option[Map[String, String]])(implicit ec: ExecutionContext) : Future[(String, String)] = {
+    gitHubConnector.getReleases(user, repo).map(response => response.json)
     .map(json => releases match {
       case Some(x) => findDates(release, x)
       case None => findDates(release, getReleases(json)._2)

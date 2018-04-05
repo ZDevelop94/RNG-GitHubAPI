@@ -1,4 +1,4 @@
-@(repo: String, releases: List[String], releaseDates: Map[String,String])
+@(user: String, repo: String, releases: List[String], releaseDates: Map[String,String])
 
 @main("Release Notes Page"){
   <div class="jumbotron text-center">
@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row">
         <p>Release: @release</p>
-        <a href=@routes.ReleaseNoteController.showCommits(repo, release, Some(releaseDates)) class="btn-primary" role="button"> go to notes</a>
+        <a href=@routes.ReleaseNoteController.showCommits(user, repo, release, Some(releaseDates)) class="btn-primary" role="button"> go to notes</a>
       </div>
     </div>
   }

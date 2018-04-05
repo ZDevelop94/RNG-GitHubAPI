@@ -25,13 +25,13 @@ class releaseNoteGeneratorSpec extends WordSpec with ShouldMatchers with OptionV
     }
 
     "should find v0.3.0 release date" in {
-      val (sinceDate, untilDate) = await(RNG.getReleaseDates("agent-kyc", "v0.3.0", validReleaseDates))
+      val (sinceDate, untilDate) = await(RNG.getReleaseDates("hmrc","agent-subscription", "v0.3.0", validReleaseDates))
       sinceDate shouldBe "2017-10-10T11:10:21Z"
       untilDate shouldBe "2017-10-13T15:02:03Z"
     }
 
     "should find v0.3.0 release date without mapped list of dates" in {
-      val (sinceDate, untilDate) = await(RNG.getReleaseDates("agent-kyc", "v0.3.0", None))
+      val (sinceDate, untilDate) = await(RNG.getReleaseDates("hmrc", "agent-subscription", "v0.3.0", None))
       sinceDate shouldBe "2017-10-10T11:10:21Z"
       untilDate shouldBe "2017-10-13T15:02:03Z"
     }
