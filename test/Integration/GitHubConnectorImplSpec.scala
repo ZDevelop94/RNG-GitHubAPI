@@ -1,15 +1,15 @@
 package Integration
 
-import connectors.GitHubConnector
+import connectors.GitHubConnectorImpl
 import org.scalatest.{OptionValues, ShouldMatchers, WordSpec}
 import org.scalatestplus.play.{OneAppPerSuite, WsScalaTestClient}
 import play.api.test.Helpers._
 import play.api.libs.ws.{WSClient, _}
 
-class GitHubConnectorSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite{
+class GitHubConnectorImplSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite{
 
   val wsClient = app.injector.instanceOf[WSClient]
-  val connector = new GitHubConnector(wsClient)
+  val connector = new GitHubConnectorImpl(wsClient)
 
   "GitHubConnector" should {
     "return repo commits in JSON format" in {

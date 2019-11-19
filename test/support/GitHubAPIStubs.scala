@@ -4,7 +4,7 @@ import play.api.libs.json.{JsValue, Json}
 
 object GitHubAPIStubs {
 
-  val validCommitResponseRelease:JsValue = Json.parse(
+  val validCommitResponseRelease: JsValue = Json.parse(
     """
       |[{
       |  "sha": "d783fcc31965e8a3d6103b98a94a182c225ead51",

@@ -13,7 +13,7 @@ import support.GitHubAPIStubs._
 class ControllerSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite {
 
   private val wsClient = app.injector.instanceOf[WSClient]
-  val connector = new GitHubConnector(wsClient)
+  val connector = new GitHubConnectorImpl(wsClient)
   val releaseNoteGenerator = new ReleaseNoteGenerator(connector)
   val controller = new ReleaseNoteController(releaseNoteGenerator, connector)
 

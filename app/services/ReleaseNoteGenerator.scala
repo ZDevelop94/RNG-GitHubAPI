@@ -2,16 +2,19 @@ package services
 
 import javax.inject.Inject
 
-import connectors.GitHubConnector
+import connectors.GitHubConnectorImpl
 import play.api.libs.json._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global._
 import scala.concurrent.ExecutionContext
 
-class ReleaseNoteGenerator @Inject()(gitHubConnector: GitHubConnector) {
+class ReleaseNoteGenerator @Inject()(gitHubConnector: GitHubConnectorImpl) {
 
   def messageExtractor (json: JsValue): List[String] = {
-    (json \\ "message").map(_.asOpt[String].getOrElse("Cannot find field")).toList
+    val zippedList : Seq[(String, String)] = (json \\ "sha").map(_.asOpt[String].getOrElse("Cannot find field")).toList zip
+    (json \\ "message").map(_.asOpt[String].getOrElse("Cannot find field"))
+
+    zippedList.map(tupleString => s"\n sha : ${tupleString._1} \n message: ${tupleString._2}").toList
   }
 
   def getReleases(json: JsValue): (List[String], Map[String,String]) = {

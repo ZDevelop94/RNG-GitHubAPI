@@ -11,9 +11,10 @@ libraryDependencies ++= Seq(
   jdbc,
   cache,
   ws,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
-  "org.scalatest" % "scalatest_2.11" % "2.2.2" % "test",
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.12.6-play26"
+  "org.reactivemongo"         %% "play2-reactivemongo"  % "0.12.6-play26",
+  "org.scalatestplus.play"    %% "scalatestplus-play"   % "1.5.1" % Test,
+  "org.scalatest"             %  "scalatest_2.11"       % "2.2.2" % "test",
+  "com.typesafe"              %  "config"               % "1.2.1"
 )
 
 routesImport += "binders.CustomQueryStringBinder._"

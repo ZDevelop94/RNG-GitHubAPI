@@ -1,27 +1,30 @@
 package controllers
 
 import javax.inject.Inject
-
-import connectors.GitHubConnector
+import connectors.GitHubConnectorImpl
+import exceptions.HttpException
 import play.api.libs.json.JsValue
-import play.api.mvc.{Action, Controller, QueryStringBindable}
+import play.api.mvc.{Action, Controller}
 import services.ReleaseNoteGenerator
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.concurrent.duration.Duration
 
-class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator, gitHubConnector: GitHubConnector) extends Controller {
+class ReleaseNoteController @Inject()(releaseNoteGenerator: ReleaseNoteGenerator, gitHubConnector: GitHubConnectorImpl) extends Controller {
 
   def showCommits(user: String, repo: String, release: String, releases: Option[Map[String,String]]) = Action.async {
-
-    val futureDates = releaseNoteGenerator.getReleaseDates(user, repo, release, releases)
-      .map(dates => gitHubConnector.getCommits(dates._1, dates._2, user, repo)
-        .map(response => releaseNoteGenerator.messageExtractor(response.json)))
-
-    val result = futureDates.map(_.map(x => Ok(views.html.showReleaseNote(x, user, repo))))
-
-    result.flatMap(x => x)
+    releaseNoteGenerator.getReleaseDates(user, repo, release, releases)
+      .flatMap(dates => gitHubConnector.getCommits(dates._1, dates._2, user, repo)
+        .map { response =>
+          response.status match {
+            case 200 => releaseNoteGenerator.messageExtractor(response.json)
+            case _ => HttpException(response.status, "commit_url")
+              List.empty[String]
+          }
+        }
+      ) recover {
+      case _: Exception => List.empty[String]
+    } map (commits => Ok(views.html.showReleaseNote(commits, user, repo)))
   }
 
   def getReleases(user: String, repo: String) = Action.async {

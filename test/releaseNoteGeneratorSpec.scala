@@ -10,7 +10,7 @@ import play.api.test.Helpers._
 class releaseNoteGeneratorSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite{
 
   private val wsClient = app.injector.instanceOf[WSClient]
-  val connector = new GitHubConnector(wsClient)
+  val connector = new GitHubConnectorImpl(wsClient)
   val RNG = new ReleaseNoteGenerator(connector)
 
   "releaseNoteGenerator" should {
