@@ -1,3 +1,4 @@
+/*
 package Integration
 
 import org.scalatestplus.play._
@@ -18,3 +19,4 @@ class IntegrationSpec extends PlaySpec with OneServerPerTest with OneBrowserPerT
     }
   }
 }
+*/

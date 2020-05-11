@@ -1,12 +1,12 @@
 package connectors
 
-import play.api.libs.ws.WSResponse
+import play.api.libs.json.JsValue
 
 import scala.concurrent.Future
 
 trait GitHubConnector {
 
-  def getCommits (since: String, until: String, user: String, repo: String): Future[WSResponse]
+  def fetchCommits (since: String, until: String, user: String, repo: String): Future[JsValue]
 
-  def getReleases (user: String, repo: String) : Future[WSResponse]
+  def fetchReleases (user: String, repo: String) : Future[JsValue]
 }
