@@ -13,8 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class GitHubConnectorImpl @Inject()(ws: WSClient) extends GitHubConnector with Config {
 
-
-  def fetchCommits (since: String, until: String, user: String, repo: String): Future[JsValue] = {
+  def fetchCommits(since: String, until: String, user: String, repo: String): Future[JsValue] = {
 
     val url = baseUrl + s"/$user/$repo/commits"
     val sinceDate = if(since.nonEmpty) since else defaultDate
@@ -23,7 +22,7 @@ class GitHubConnectorImpl @Inject()(ws: WSClient) extends GitHubConnector with C
     sendRequest(url, query)
   }
 
-  def fetchReleases(user: String, repo: String) : Future[JsValue] = {
+  def fetchReleases(user: String, repo: String): Future[JsValue] = {
     val url = baseUrl + s"/$user/$repo/releases"
     sendRequest(url, Map.empty)
   }
@@ -33,7 +32,7 @@ class GitHubConnectorImpl @Inject()(ws: WSClient) extends GitHubConnector with C
       .withQueryString(parameters = query.toSeq: _*)
       .withHeaders("Accept" -> "application/vnd.github.v3+json")
 
-    Logger.info(s"Requested URL: ${request.url}")
+    Logger.info(s"Requested URLLLL: ${request.uri.toString}")
     //println(s"Requested URL: ${request.url}")
 
     request.get().map { response =>

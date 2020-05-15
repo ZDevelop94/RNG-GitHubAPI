@@ -1,36 +1,53 @@
 package Integration
 
 import connectors.GitHubConnectorImpl
-import org.scalatest.{OptionValues, ShouldMatchers, WordSpec}
-import org.scalatestplus.play.{OneAppPerSuite, WsScalaTestClient}
 import play.api.libs.json.JsValue
 import play.api.test.Helpers._
-import play.api.libs.ws.{WSClient, _}
+import java.net.URLEncoder
+import scala.concurrent.ExecutionContext.Implicits.global
 
-class GitHubConnectorImplSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite{
+import support.TestHelper
 
-  val wsClient = app.injector.instanceOf[WSClient]
-  val connector = new GitHubConnectorImpl(wsClient)
+import scala.util.{Failure, Success}
+
+class GitHubConnectorImplSpec extends TestHelper {
+
+  val baseUrlStub:String = "http://localhost:8080/repos"
+
+  val connector = new GitHubConnectorImpl(wsClient) {
+    override val baseUrl:String = baseUrlStub
+  }
+
+  val since = URLEncoder.encode("2017-10-10T11:10:21Z", "UTF-8")
+  val until = URLEncoder.encode("2017-10-13T15:02:03Z", "UTF-8")
+
+  val queryParam = s"?since=$since&until=$until"
 
   "GitHubConnector" should {
     "return repo commits in JSON format" in {
-      val result: JsValue = await(connector.getCommits("2017-10-10T11:10:21Z", "2017-10-13T15:02:03Z","hmrc","agent-subscription"))
-      result.toString().contains("New endpoint") shouldBe true
-    }
+      val commitUrl = s"/repos/akka/akka/commits$queryParam"
+      stubUrl(commitUrl, "test/resources/stubs/akkaCommitsResponse.json")
 
-    "Not return repo commits not in release" in {
-      val result = await(connector.getCommits("2017-10-10T11:10:21Z", "2017-10-13T15:02:03Z","hmrc", "agent-subscription"))
-      result.toString().contains("fixed int spec") shouldBe false
+      val result: JsValue = await(connector.fetchCommits("2017-10-10T11:10:21Z", "2017-10-13T15:02:03Z","akka","akka"))
+      result.toString().contains("chbatey") shouldBe true
     }
 
     "return repo releases in JSON format" in {
-      val result = await(connector.getReleases("hmrc", "agent-subscription"))
-      result.toString().contains("v0.3.0") shouldBe true
+      val url = s"/repos/akka/akka/releases"
+      stubUrl(url, "test/resources/stubs/akkareleasesResponse.json")
+
+      val result = await(connector.fetchReleases("akka", "akka"))
+      result.toString().contains("v2.6.5") shouldBe true
     }
 
     "return a BAD REQUEST when sending an invalid Json" in {
-      val result = await(connector.getCommits("20170101","20180101","hmrc","agent-subscription"))
-      result.toString().contains("[]") shouldBe true
+      val commitUrl = s"/repos/akka/akka/commits$queryParam"
+
+      stubUrl(commitUrl, "", 400)
+      connector.fetchCommits("20170101","20180101","akka","akka").onComplete{
+        case Success(_) => fail
+        case Failure(e) => e.getMessage.contentEquals("BAD REQUEST") shouldBe true
+      }
     }
   }
 }
