@@ -1,7 +1,7 @@
 import com.google.inject.AbstractModule
 import java.time.Clock
 
-import connectors.{GitHubConnector, GitHubConnectorImpl}
+import connectors.GitHubConnector
 import services.{ApplicationTimer, AtomicCounter, Counter, ReleaseNoteGenerator, ReleaseNoteGeneratorImpl}
 
 /**
@@ -25,7 +25,6 @@ class Module extends AbstractModule {
     // Set AtomicCounter as the implementation for Counter.
     bind(classOf[Counter]).to(classOf[AtomicCounter])
     bind(classOf[ReleaseNoteGenerator]).to(classOf[ReleaseNoteGeneratorImpl])
-    bind(classOf[GitHubConnector]).to(classOf[GitHubConnectorImpl])
   }
 
 }

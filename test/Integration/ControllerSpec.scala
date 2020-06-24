@@ -1,23 +1,29 @@
 /*
+
 package Integration
 
-import controllers.ReleaseNoteController
-import org.scalatest.{OptionValues, ShouldMatchers, WordSpec}
-import org.scalatestplus.play._
-import play.api.test.Helpers._
-import play.api.test.{FakeRequest, _}
+import java.net.URLEncoder
+
 import services.ReleaseNoteGeneratorImpl
-import connectors._
-import play.api.libs.ws.WSClient
+import controllers.ReleaseNoteController
+import play.api.test.FakeRequest
 import support.GitHubAPIStubs._
+import play.api.test.Helpers._
+import support.TestHelper
+import connectors._
 
-class ControllerSpec extends WordSpec with ShouldMatchers with OptionValues with WsScalaTestClient with OneAppPerSuite {
+class ControllerSpec extends TestHelper {
 
-  private val wsClient = app.injector.instanceOf[WSClient]
-  val connector = new GitHubConnectorImpl(wsClient)
   val releaseNoteGenerator = new ReleaseNoteGeneratorImpl(connector)
+  val connector = new GitHubConnectorImpl(wsClient)
   val controller = new ReleaseNoteController(releaseNoteGenerator, connector)
 
+  val since = URLEncoder.encode("2020-03-13T13:03:25Z", "UTF-8")
+  val until = URLEncoder.encode("2020-04-30T08:46:48Z", "UTF-8")
+
+  val queryParam = s"?since=$since&until=$until"
+
+  val baseUrlStub:String = "http://localhost:8080/repos"
 
   "Routes" should {
     "send 404 on a bad request" in {
@@ -25,31 +31,27 @@ class ControllerSpec extends WordSpec with ShouldMatchers with OptionValues with
     }
   }
 
-  "HomeController" should {
-
-    /*"render the index page" in {
-      val home = route(app, FakeRequest(GET, "/")).get
-
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Your new application is ready.")
-    }*/
-  }
-
   "ReleaseNoteController" should {
 
     "return list of commits for one release" in {
-      val result = controller.showReleaseDetails("hmrc", "agent-subscription","v0.3.0", validReleaseDates)(FakeRequest("GET", "repo/agent-subscription/v0.3.0/v0.3.0?releases=Map%28v0.2.0+->+2017-10-10T11%3A10%3A21Z%2C+v0.3.0+->+2017-10-13T15%3A02%3A03Z%29"))
+      val commitUrl = s"/repos/akka/akka/commits$queryParam"
+      stubUrl(commitUrl, "test/resources/stubs/akkaCommitsResponse.json")
+
+      val result = controller.showReleaseDetails("akka", "akka","v2.6.5", validReleaseDates)(FakeRequest("GET", "repo/agent-subscription/v0.3.0/v0.3.0?releases=Map%28v0.2.0+->+2017-10-10T11%3A10%3A21Z%2C+v0.3.0+->+2017-10-13T15%3A02%3A03Z%29"))
 
       status(result) shouldBe 200
-      contentAsString(result).contains("New endpoint") shouldBe true
+      contentAsString(result).contains("ef797383732a0374179316688e54575f24faa3cd") shouldBe true
     }
 
     "return list of releases" in {
-      val result = controller.getReleases("hmrc","agent-subscription")(FakeRequest("GET", "repo/hmrc/agent-subscription"))
+      val url = s"/repos/akka/akka/releases"
+      stubUrl(url, "test/resources/stubs/akkaReleasesResponse.json")
+
+      val result = controller.getReleases("akka","akka")(FakeRequest("GET", "/akka/akka"))
 
       status(result) shouldBe 200
-      contentAsString(result).contains("v0.3.0") shouldBe true
+      contentAsString(result).contains("v2.6.5") shouldBe true
     }
   }
-}*/
+}
+*/

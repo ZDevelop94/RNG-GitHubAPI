@@ -1,0 +1,8 @@
+@(state: String, clientId: String, redirectUrl: String)
+
+@main("Github Generator"){
+    <div class="jumbotron text-center">
+        <h1>Login To Github</h1>
+        <a href='https://github.com/login/oauth/authorize?client_id=@clientId&redirect_uri=@redirectUrl' &state=@state class="btn-primary" role="button"> Continue</a>
+    </div>
+}

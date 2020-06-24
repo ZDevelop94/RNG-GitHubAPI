@@ -1,7 +1,10 @@
 package controllers
 
+import java.util.UUID
+
+import auth.AuthState
+import config.Config
 import javax.inject._
-import play.api._
 import play.api.mvc._
 
 /**
@@ -9,7 +12,7 @@ import play.api.mvc._
  * application's home page.
  */
 @Singleton
-class HomeController @Inject() extends Controller {
+class HomeController @Inject() extends Controller with Config {
 
   /**
    * Create an Action to render an HTML page with a welcome message.
@@ -18,7 +21,7 @@ class HomeController @Inject() extends Controller {
    * a path of `/`.
    */
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    val state = AuthState(UUID.randomUUID().toString)
+    Ok(views.html.home(state.value, clientId, redirectUri)).withSession("state" -> state.value)
   }
-
 }

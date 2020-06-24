@@ -29,6 +29,7 @@ object HttpException {
       case 401 => Unauthorized(url = url)
       case 403 => Forbidden(url = url)
       case 500 => ServerError(url = url)
+      case _ => ServerError()
     }
   }
 }

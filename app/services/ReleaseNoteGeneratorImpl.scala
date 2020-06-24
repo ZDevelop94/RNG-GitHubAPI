@@ -1,7 +1,7 @@
 package services
 
-import javax.inject.Inject
 import connectors.GitHubConnector
+import javax.inject.Inject
 import play.api.libs.json._
 
 import scala.concurrent.Future
@@ -43,9 +43,15 @@ class ReleaseNoteGeneratorImpl @Inject()(gitHubConnector: GitHubConnector) exten
    getReleaseDates(user, repo, release, releases)
      .flatMap { dates =>
        gitHubConnector.fetchCommits(dates._1, dates._2, user, repo)
-         .map(value => messageExtractor(value))
+         .map{value =>
+           println("value: " + value)
+           val x = messageExtractor(value)
+           println("dfdfdf : " + x)
+           x
+         }
      } recover {
-     case _: Exception => List.empty[String]
+     case e: Exception => println(s"EXCPTION : ${e.getMessage}")
+       List.empty[String]
    }
   }
 

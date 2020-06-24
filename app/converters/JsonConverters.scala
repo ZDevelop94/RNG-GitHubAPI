@@ -1,10 +1,10 @@
-/*
+
 package converters
 
-import auth.AuthResponse
+import auth.OAuthToken
 import play.api.libs.json.Json
 
 trait JsonConverters {
-  implicit val reads = Json.reads[AuthResponse]
+  implicit val reads = Json.reads[OAuthToken]
 }
-*/
+
